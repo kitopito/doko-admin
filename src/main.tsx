@@ -5,11 +5,22 @@ import { ChakraProvider } from '@chakra-ui/react'
 import Config from './Config.tsx'
 import './index.css'
 import Status from './Status.tsx'
+import { Route, RouterProvider, createBrowserRouter } from 'react-router-dom'
 
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App></App>,
+  },
+  {
+    path: "config/",
+    element: <Config></Config>,
+  },
+]);
 ReactDOM.createRoot(document.getElementById('root')!).render(
 //  <React.StrictMode>
     <ChakraProvider>
-      <Config></Config>
+      <RouterProvider router={router} />
     </ChakraProvider>
 //  </React.StrictMode>,
 )

@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react'
 import { BarList, Card } from "@tremor/react";
 import { Button, Spinner } from '@chakra-ui/react';
+import { useLocation } from 'react-router-dom';
 
 const workerURL = "https://dokosen-worker.kitopitowada.workers.dev/";
 //const workerURL = "http://127.0.0.1:8787/";
 function Config() {
+  const location = useLocation();
+    
   const [teacher, setTeacher] = useState<TeacherInfo>();
   const [sensor, setSensor] = useState<SensorData[]>([]);
   const [config, setConfig] = useState({
@@ -21,12 +24,13 @@ function Config() {
 
   useEffect(() => {
     (async ()=>{
+      const id = location.state;
       /*
       const res = await fetch(workerURL, {
         body: JSON.stringify({teacherId: 1})
       });
       */
-      const c = await fetch(workerURL + 'config?teacherId=1');
+      const c = await fetch(workerURL + 'config?teacherId=' + id.toString());
       const fetchedConfig = await c.json();
       console.log(fetchedConfig);
       setConfig(fetchedConfig);
