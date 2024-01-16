@@ -35,7 +35,7 @@ function Config() {
       console.log(fetchedConfig);
       setConfig(fetchedConfig);
 
-      const fetchedData = await fetchStatus();
+      const fetchedData = await fetchStatus(id);
       console.log(fetchedData);
       setTeacher(fetchedData.teacherInfo);
       setSensor(fetchedData.sensors);
@@ -67,11 +67,11 @@ function Config() {
             console.log("Button is  Clicked at " + ButtonClickTime.toString());
 
             const timer = setInterval(async ()=>{
-              const fetchedData = await fetchStatus();
-              const teacher = fetchedData.teacherInfo;
+              const fetchedData = await fetchStatus(teacher!.id);
+              const fetchedTeacher = fetchedData.teacherInfo;
               const sensor = fetchedData.sensors;
-              console.log("updated at " + teacher.updatedAt.toString());
-              if(teacher.updatedAt > ButtonClickTime) {
+              console.log("updated at " + fetchedTeacher.updatedAt.toString());
+              if(fetchedTeacher.updatedAt > ButtonClickTime) {
                 const newConfig = {...config}
                 newConfig.configs[cursor].values = sensor.map((item)=>{
                   return item.value;
@@ -96,7 +96,7 @@ function Config() {
                     },
                     redirect: "follow", // manual, *follow, error
                     referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-                    body: JSON.stringify({teacherId: teacher.id, config: config}), // 本体のデータ型は "Content-Type"
+                    body: JSON.stringify({teacherId: fetchedTeacher.id, config: config}), // 本体のデータ型は "Content-Type"
                   });
                   setCursor(0);
                 }
@@ -128,8 +128,8 @@ function Config() {
 
 export default Config
 
-async function fetchStatus() {
-    const res = await fetch(workerURL + 'admin/config?teacherId=1');
+async function fetchStatus(teacherId: number) {
+    const res = await fetch(workerURL + 'admin/config?teacherId=' + teacherId.toString());
     const fetchedData = await res.json() as {teacherInfo: TeacherInfo, sensors: SensorData[]};
     console.log(fetchedData);
     return fetchedData;

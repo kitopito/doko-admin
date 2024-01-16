@@ -6,6 +6,7 @@ import Config from './Config.tsx'
 import './index.css'
 import Status from './Status.tsx'
 import { Route, RouterProvider, createBrowserRouter } from 'react-router-dom'
+import Log from './Log.tsx'
 
 const router = createBrowserRouter([
   {
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
   {
     path: "config/",
     element: <Config></Config>,
+  },
+  {
+    path: "log/",
+    element: <Log></Log>,
   },
 ]);
 ReactDOM.createRoot(document.getElementById('root')!).render(
