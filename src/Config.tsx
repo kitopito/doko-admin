@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { BarList, Card } from "@tremor/react";
-import { Button, Spinner } from '@chakra-ui/react';
+import { Button, Center, Spinner } from '@chakra-ui/react';
 import { useLocation } from 'react-router-dom';
 
 const workerURL = "https://dokosen-worker.kitopitowada.workers.dev/";
@@ -44,25 +44,12 @@ function Config() {
 
   return (
     <>
-      <div>
-      </div>
-      {isSetting == false
-        ? <Button onClick={()=>{
-          /*
-          setInterval(async ()=>{
-            const fetchedData = await fetchStatus();
-            setTeacher(fetchedData.teacherInfo);
-            setSensor(fetchedData.sensors);
-          }, 1000);
-          */
-          setSetting(true);
-        }} onTouchStart={()=>{
-        }}>{config.statuses[cursor]}を設定</Button>
-        : isWaiting
-        ? <Spinner/>
+    <div>
+      {isWaiting
+        ? <Center><Spinner margin={5} /></Center>
         : <>
-          <p>{config.statuses[cursor]}に状態を変更してください</p>
-          <Button onClick={()=>{
+          <Center paddingTop={5}><p>{config.statuses[cursor]}に状態を変更してください</p></Center>
+          <Center><Button marginBottom={5} marginTop={2} onClick={()=>{
             const ButtonClickTime = getNowScond();
             console.log("Button is  Clicked at " + ButtonClickTime.toString());
 
@@ -106,7 +93,7 @@ function Config() {
             }, 1000);
 
             setWaiting(true);
-          }}>変更した！</Button>
+          }}>変更した！</Button></Center>
           </>
       }
       {config.configs.map((item, i) => 
@@ -122,6 +109,7 @@ function Config() {
         </Card>
         </>
       )}
+    </div>
     </>
   )
 }
